@@ -79,12 +79,13 @@ for(i in 1:nrow(compTerms)) {
 
   
   GSA2Solr <- GSA2Solr[-1,]
-  GSA2Solr$SOLR_Rank = factor(GSA2Solr$SOLR_Rank, levels=c(levels(GSA2Solr$SOLR_Rank), 0))
-  GSA2Solr$SOLR_Rank[is.na(GSA2Solr$SOLR_Rank)] <- 0
+# coalesce NA values to zeroes -- this messed up the plot
+#   GSA2Solr$SOLR_Rank = factor(GSA2Solr$SOLR_Rank, levels=c(levels(GSA2Solr$SOLR_Rank), 0))
+#   GSA2Solr$SOLR_Rank[is.na(GSA2Solr$SOLR_Rank)] <- 0
   
   Solr2GSA <- Solr2GSA[-1,]
-  Solr2GSA$GSA_Rank = factor(Solr2GSA$GSA_Rank, levels = c(levels(Solr2GSA$GSA_Rank), 0))
-  Solr2GSA$GSA_Rank[is.na(Solr2GSA$GSA_Rank)] <- 0
+#   Solr2GSA$GSA_Rank = factor(Solr2GSA$GSA_Rank, levels = c(levels(Solr2GSA$GSA_Rank), 0))
+#   Solr2GSA$GSA_Rank[is.na(Solr2GSA$GSA_Rank)] <- 0
   
   commonResults <- commonResults[-1,]
   
@@ -94,16 +95,17 @@ for(i in 1:nrow(compTerms)) {
   write.csv(Solr2GSA, paste(compTerms[i,1], "SOLR2GSA.csv", sep = ""))
   write.csv(commonResults, paste(compTerms[i,1], "CommonResults.csv", sep = ""))
   
-  if(nrow(commonResults) < 2)
+  if(nrow(commonResults) < 2) {
     print(paste0("no common results for term ", compTerms[i,1]))
-
-  #graph
-  
-  
-  p <- ggplot(na.omit(GSA2Solr), aes(x=GSA_Rank, y=SOLR_Rank)) + geom_point() + geom_hline(aes(yintercept=10), color="red") + geom_abline(intercept = 0, slope=1, color="blue")
-  p + facet_wrap( ~ searchTerm) + ggtitle("Comparing SOLR Results to GSA Results\nRed Line is GSA first page cut off\nBlue line are GSA results")
-  
-  ggsave(paste(compTerms[i,1], "ResultsPlot.pdf", sep = ""), width=7, height=10, dpi=100)
+  } else {
+    #graph
+    
+    
+    p <- ggplot(na.omit(GSA2Solr), aes(x=GSA_Rank, y=SOLR_Rank)) + geom_point() + geom_hline(aes(yintercept=10), color="red") + geom_abline(intercept = 0, slope=1, color="blue")
+    p + facet_wrap( ~ searchTerm) + ggtitle("Comparing SOLR Results to GSA Results\nRed Line is GSA first page cut off\nBlue line are GSA results")
+    
+    ggsave(paste(compTerms[i,1], "ResultsPlot.pdf", sep = ""), width=7, height=10, dpi=100)
+}
 
   #reset results DataFrames
   ### shortcut because I didn't do this correctly.  
