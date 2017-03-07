@@ -1,0 +1,2 @@
+Queries,GSA,Solr
+Zika,https://search.cdc.gov/search?utf8=%E2%9C%93&affiliate=cdc-main&query=zika,http://widv-kmti-oadc1.cdc.gov/connects/search/?ddlTitleWeight=50&ddlKeyWeight=30&ddlContentWeight=1&ddlTitleWeightExact=100&ddlKeyWeightExact=30&ddlContentWeightExact=5&ddlPFTitleWeight=50&ddlPFContentWeight=1&ddlPFTitleWeightExact=100&ddlPFContentWeightExact=5&query=zika
