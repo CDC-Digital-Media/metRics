@@ -2,7 +2,7 @@ library("RSiteCatalyst")
 library(dplyr)
 SCAuth(Sys.getenv(SC_ID), Sys.getenv(SC_KEY))
 library(ggplot2)
-
+library(xlsx)
 
 # rs <- GetReportSuites()
 # elems <- GetElements("cdcgov")
@@ -41,3 +41,7 @@ print(c("home", hometrendedID))
 print(c("dc", dctrendedID))
 print(c("az", aztrendedID))
 print(c("media", mediatrendedID))
+
+
+wide_trended <- reshape(fulltrended, direction = "wide", timevar = "hour", idvar = c("name", "url"))
+write.xlsx(wide_trended, "ThirdPartyTestAnalysis.xlsx")
