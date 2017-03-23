@@ -7,7 +7,7 @@ library(tcltk2)
 
 topics <- fromJSON("https://tools.cdc.gov/api/v2/resources/tags?max=0")
 results <- topics$results
-eng_topics <- subset(results, results$language == "English" & results$type == "Topic")
+eng_topics <- results[results$language == "English" & results$type == "Topic",]
 eng_topics$rank <- -1 #add a column for rank so I can populate it from Google Trends
 
 PopulateNext = function() {
@@ -35,12 +35,21 @@ PopulateNext = function() {
   }
   else
   {
-    trending_topics <- subset(eng_topics, rank == 100)
-    trending_topics$id <- NULL #remove these columns
-    trending_topics$language <- NULL
-    trending_topics$type <- NULL
-    trending_topics$recentSearches <- NULL
+    PopulateTrending()
   }
 }
 
 PopulateNext()
+PopulateTrending()
+
+PopulateTrending = function()
+{
+  trending_topics <<- subset(eng_topics, rank > 90)
+  trending_topics$id <<- NULL #remove these columns
+  trending_topics$language <<- NULL
+  trending_topics$type <<- NULL
+  trending_topics$recentSearches <<- NULL
+  ignore <<- c("Other", "Funding", "Travel Health - delete")
+  trending_topics <<- trending_topics[-which(trending_topics$name %in% ignore),]
+  #trending_topics <<- trending_topics[-which(trending_topics$name == "Other" | trending_topics$name == "Funding" | trending_topics$name == "Travel health - delete"),]
+}
