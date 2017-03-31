@@ -1,0 +1,50 @@
+---
+title: "Report on A|B Test"
+subtitle: "Media Page"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+ABTestPage <- "CDC Newsroom | CDC Online Newsroom | CDC"
+start <- "2016-05-17"
+end <- "2016-06-18"
+
+VarAMediaID <- 132005
+VarBMediaID <- 272991
+ABTestPageURL <- "http://www.cdc.gov/media/"
+VarAFriendlyName <- "Current 'News Releases' Link"
+VarBFriendlyName <- "Proposed 'News Releases' Link"
+
+
+currentConversionRate <- .08
+minEffect <- .03
+sampleVariance <- currentConversionRate*(1-currentConversionRate)
+SampleSize <- 16*(sampleVariance/minEffect^2)
+
+if(sampleVariance < SampleSize) {
+    recPrint <- "It is NOT RECOMMENDED to stop the test."
+} else {
+    recPrint <- "It is OKAY to stop the test."
+    }
+
+```
+# Report for A|B test on `r ABTestPage`
+#### From: `r start` to: `r end`
+
+## Sample size has `r if(sampleVariance< SampleSize) {print("not yet ")}`reached target for statistical validity.
+  
+### `r recPrint`
+
+## `r ABTestPage`
+### `r ABTestPageURL`
+From: `r start` to: `r end`
+
+Variant A is `r VarAFriendlyName`
+
+Variant B is `r VarBFriendlyName`
+
+
+
+

@@ -1,3 +1,7 @@
+environment.R
+cacert.perm
+fb_oauth
+
 # History files
 .Rhistory
 .Rapp.history
